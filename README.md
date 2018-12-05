@@ -12,9 +12,7 @@
 
 The following commands will compile the code and execute the main method in the class code.sample.QuickRun.
 
-Use the following command to have run the InputAnalyzer with command line arguments.   The analyzer requires three pieces of data.  The first, an integer, to indicate the type of sample code to run (1 = InputAnalyzer).  The second is the input file path, and the third is the search string for the input.  Only the first value indicating the sample code type is required at the command line.  If no additional arguments are passed at the command line, then the analyzer will use the default values set in sample.properties.  A test file (referenced in below command) has been provided with the project.  
- 
-The following two commands would yield the same result…
+Use the following command to have run the InputAnalyzer with command line arguments.   The analyzer requires three pieces of data.  The first, an integer, to indicate the type of sample code to run (1 = InputAnalyzer).  The second is the input file path, and the third is the search string for the input.  Only the first value indicating the sample code type is required at the command line.  If no additional arguments are passed at the command line, then the analyzer will use the default values set in sample.properties.  A test file (referenced in below command) has been provided with the project. The following two commands would yield the same result.
 
 Base command that will use property file default values
 
@@ -42,15 +40,18 @@ then
 
 `mvn package`
 
-Note the package command will run any test cases and then create a jar file.  Once the jar is create, execute one of the following commands.  As mentioned above you can also run the command with your own path and search term.
+*Note the package command will run any test cases and then create a jar file.  Once the jar is create, execute one of the following commands.  As mentioned above you can also run the command with your own path and search term.*
 
 Execute the main() method with command line arguments
+
 `java -cp target/code-sample-1.0.jar code.sample.QuickRun "1" "resources/test-input.txt" "foo"`
 
 Using your own path and search terms
+
 `java -cp target/code-sample-1.0.jar code.sample.QuickRun -Dexec.args="1" "your-input.txt" "your-search-term"`
 
-- Execute the main() method using properties
+Execute the main() method using properties
+
 `java -cp target/code-sample-1.0.jar code.sample.QuickRun "1"`
 
 
@@ -74,7 +75,7 @@ Command where both arguments are entered on command line (Note that a space is u
 
 To use another directory, replace your path here with the path of choice.
 
-`#mvn compile exec:java -Dexec.mainClass=code.sample.QuickRun -Dexec.args="2 your path here"`
+`mvn compile exec:java -Dexec.mainClass=code.sample.QuickRun -Dexec.args="2 your_path_here"`
 
 *Note this command will generate class files under the projects /target folder, but a jar file will not be created and test cases will not be executed.*
 
@@ -92,7 +93,7 @@ then
 
 Execute the FileScanner with command line arguments. 
 
-`java -cp target/code-sample-1.0.jar code.sample.QuickRun "2" "your path here"`
+`java -cp target/code-sample-1.0.jar code.sample.QuickRun "2" "your_path_here"`
 
 Execute FileScanner using properties
 
@@ -105,7 +106,6 @@ Execute FileScanner using properties
 The following commands will compile the code and execute the main method in the class code42.sample.QuickRun.
 
 Use the following command to run the Math Multiplier with command line arguments.  The multiplier requires three pieces of data.  The first will indicate the type of sample code to run (3 = Multiplier).  The second and third arguments are the values to be multiplied.  All arguments must be provided.
-
 
 Sample command
 
@@ -129,6 +129,6 @@ Execute the multiplier with command line arguments.
 
 Example:
 
- `java -cp target/code-sample-1.0.jar code.sample.QuickRun "3" "100" "-4"`
+`java -cp target/code-sample-1.0.jar code.sample.QuickRun "3" "100" "-4"`
 
 
