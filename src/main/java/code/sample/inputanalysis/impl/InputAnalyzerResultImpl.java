@@ -2,6 +2,8 @@ package code.sample.inputanalysis.impl;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.NavigableSet;
 import java.util.TreeMap;
 
@@ -10,6 +12,7 @@ import code.sample.inputanalysis.InputAnalyzerResult;
 public class InputAnalyzerResultImpl implements InputAnalyzerResult {
 	
 	private List<String> stringValues = null;
+	private Set<String> uniqueStringValues = null;
 	private List<Double> numericValues = null;
 	private List<String> sortedStringValues = null;
 	private List<Double> sortedNumericValues = null;
@@ -29,6 +32,8 @@ public class InputAnalyzerResultImpl implements InputAnalyzerResult {
 	public void setStringValues(List<String> stringValues) {
 		this.stringValues = stringValues;
 		countOfStrings = this.stringValues.size();
+		this.uniqueStringValues = new HashSet<>(this.stringValues);
+		
 		StringBuilder sb = new StringBuilder();
 		for(String s: this.stringValues) {
 			sb.append(s).append(" ");
@@ -101,9 +106,13 @@ public class InputAnalyzerResultImpl implements InputAnalyzerResult {
 		this.median = median;
 	}
 	
-	public boolean contains(String src ) 
+	public boolean contains(String src) 
 	{
-		return contains(src, true);
+		if (this.uniqueStringValues == null || this.uniqueStringValues.isEmpty()) {
+			return false;
+		} else {
+			return this.uniqueStringValues.contains(src);
+		}
 	}
 	
 	public boolean contains(String src, boolean caseSensitive ) 

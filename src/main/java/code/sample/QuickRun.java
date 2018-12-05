@@ -1,7 +1,5 @@
 package code.sample;
 
-import static code.sample.scanner.FileScanner.ScanResult;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
@@ -23,30 +21,26 @@ public class QuickRun
 {
 	private Properties props = new Properties();	
 
-    public Properties getProperties()
-    { 
+    public Properties getProperties() { 
     	return this.props;
     }
 
-    public void loadProps( String propFileName ) throws FileNotFoundException, IOException
-    {
-    	try ( FileInputStream in = new FileInputStream( propFileName ) ) 
-    	{
+    public void loadProps( String propFileName ) throws FileNotFoundException, IOException {
+    	try ( FileInputStream in = new FileInputStream( propFileName )) {
 	        props.load( in );
     	}
     }
 
-    public void runFileScanner(String scanFile)
-    {
-    	ScanResult results = FileScanner.scan(scanFile);
-    	System.out.println(String.format("Dir Count: %d", results.getNumDirectories()));
-    	System.out.println(String.format("File Count: %d", results.getNumFiles()));
-    	System.out.println(String.format("Total File Bytes: %d",  results.getTotalBytes()));
-    	System.out.println(String.format("Averave of File Bytes: %d",  results.getAvgBytes()));
+    public void runFileScanner(String scanFile) throws IOException {
+    	FileScanner scanner = new FileScanner();
+    	FileScanner.ScanResult scanResults = scanner.scan(scanFile);
+    	System.out.println(String.format("Dir Count: %d", scanResults.getDirectoryCount()));
+    	System.out.println(String.format("File Count: %d", scanResults.getFileCount()));
+    	System.out.println(String.format("Total File Bytes: %d", scanResults.getTotalBytes()));
+    	System.out.println(String.format("Averave of File Bytes: %d", scanResults.getAvgBytes()));
     } 
     
-    public void runInputAnalyzer(String inputFilePath, String containsSrc)
-    {	
+    public void runInputAnalyzer(String inputFilePath, String containsSrc) {	
     	try {
 	    	InputAnalyzer inputAnalyzer = new FileInputAnaylzerImpl(inputFilePath);
 	    	InputAnalyzerResult result = inputAnalyzer.getInputAnalyzerResult();
@@ -62,8 +56,7 @@ public class QuickRun
 					"Does input contain search string %s?: %s", 
 					containsSrc, 
 					result.contains(containsSrc)));
-    	}
-    	catch( IOException ioE ) {
+    	} catch( IOException ioE ) {
             System.out.println("Error during QuickRun for InputAnaylzer: " + ioE.getMessage());
         }  
     } 
@@ -78,7 +71,7 @@ public class QuickRun
         {  
             System.out.println("\n --  Begin QuickRun -------");
           
-            quickRun.loadProps( "resources/sample.properties" );
+            quickRun.loadProps( "src/main/resources/sample.properties" );
           	Properties props = quickRun.getProperties(); 
           	
           	// check for command line args
@@ -167,8 +160,7 @@ public class QuickRun
         		System.out.println("Command line arg must indicate type");
         	}
         } 
-        catch (Throwable thr)
-        {
+        catch (Throwable thr)  {
         	System.out.println(thr);
             System.out.println("Error during processsing: " + thr.getMessage());
         }  

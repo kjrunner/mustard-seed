@@ -2,20 +2,18 @@ package code.sample.math.impl;
 
 import code.sample.math.Math;
 
-
-
+/**
+ * Implementations free of multiplication or division operators
+ */
 public class MathImpl implements Math {
-	
-	/**
-	 * Implementation free of multiplication or division operators
-	 */
+
 	public long multiply(int a, int b) {
 		int aIsNegative = 0;
 		int bIsNegative = 0;
-		long result = 0L;
+		long abResult = 0L;
 		
 		if ((a == 0)||(b == 0)) {
-			return result;
+			return abResult;
 		}
 		
 		//keep track of sign for each
@@ -26,13 +24,20 @@ public class MathImpl implements Math {
 			bIsNegative = 1;
 		}
 		
-		result = getAbsoluteProduct(a, b);
+		abResult = getAbsoluteProduct(a, b);
 	
 		if ((aIsNegative + bIsNegative) == 1) {
-			return (result - result) - result;
+			return 0 - abResult;
 		} else {
-			return result;
+			return abResult;
 		}
+	}
+	
+	public int absolute(int value) {
+		if (value < 0) {
+			return (value - value) - value;
+		} 
+		return value;
 	}
 	
 	private long getAbsoluteProduct(int a, int b) {
@@ -52,24 +57,10 @@ public class MathImpl implements Math {
 			operand = a;
 		}
 		
-		int iterations = 0;
 		for (int i=0; i < count; i++) {
-			result = result + operand;
-			iterations += 1;
+			result += operand;
 		}
 		
-		System.out.println("GetAbsoluteProduct iteration count: " + iterations); 
 		return result;
 	}
-	
-	/**
-	 * Implementation free of multiplication or division operators
-	 */
-	public int absolute(int value) {
-		if (value < 0) {
-			return (value - value) - value;
-		} 
-		return value;
-	}
-
 }

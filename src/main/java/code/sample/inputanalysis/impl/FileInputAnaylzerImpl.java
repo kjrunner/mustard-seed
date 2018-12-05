@@ -24,45 +24,37 @@ public class FileInputAnaylzerImpl implements InputAnalyzer
 	}
 
 	@Override
-	public InputAnalyzerResult getInputAnalyzerResult() throws IOException
-	{
+	public InputAnalyzerResult getInputAnalyzerResult() throws IOException, IllegalArgumentException {
 		List<String> inputData = readFile( );
 		return getResult( inputData );
 	} 
 
-	private List<String> readFile() throws IOException
-    {
-    	String sCurrentLine = "";
+	private List<String> readFile() throws IOException {
+    	String currentLine = "";
     
     	List<String> inputData = new ArrayList<String>();
-    	
-    	//try-with-resource will handle close
-    	try ( BufferedReader br = new BufferedReader(new FileReader( filePath )))
-    	{
-    		while (( sCurrentLine= br.readLine()) != null) 
-    		{
-    			if(!sCurrentLine.trim().isEmpty()) {
-                    inputData.add( sCurrentLine.trim());
+
+    	try ( BufferedReader br = new BufferedReader(new FileReader( filePath ))) {
+    		while (( currentLine= br.readLine()) != null) {
+    			if (!currentLine.trim().isEmpty()) {
+                    inputData.add( currentLine.trim());
 				}
     		}
     	}
     	return inputData;
     } 
 
-	private InputAnalyzerResult getResult(List<String> inputData)
-	{
+	private InputAnalyzerResult getResult(List<String> inputData) throws IllegalArgumentException {
 		InputAnalyzerResultImpl result = new InputAnalyzerResultImpl();
 		List<Double> numericInput = new ArrayList<>();
 		List<String> stringInput = new ArrayList<>();
 		
-		//determine data type and add to appropriate collection
-		for( String element: inputData )
-		{
+		//determine data type and add to appropriate collection (refactor so not using catch)
+		for( String element: inputData ) {
 			try {
 				double dElement = Double.parseDouble(element);
-				numericInput.add( InputAnalyzerUtil.defaultGetRoundedValue(dElement));
-			}
-			catch( NumberFormatException numEx){
+				numericInput.add( InputAnalyzerUtil.roundValue(dElement));
+			} catch( NumberFormatException numEx) {
 				//cannot be converted
 				stringInput.add(element);
 			}
@@ -70,27 +62,15 @@ public class FileInputAnaylzerImpl implements InputAnalyzer
 		
 		result.setStringValues(stringInput);
 		result.setNumericValues(numericInput);
-		
-		result.setTotal(
-				InputAnalyzerUtil.findSum(result.getNumericValues()));
-		
-		result.setAvg( InputAnalyzerUtil.defaultGetRoundedValue( 
-				InputAnalyzerUtil.findAverage(result.getNumericValues())));
-		
-		result.setSortedNumericValues( 
-				InputAnalyzerUtil.getSortedNumbers(result.getNumericValues()));
-		
-		result.setSortedStringValues(
-				InputAnalyzerUtil.getSortedStrings(result.getStringValues()));
-		
-		result.setMedian( 
-				InputAnalyzerUtil.findMedian(result.getSortedNumericValues()));
-		
-		result.setPercentageOfNumbers(
-				InputAnalyzerUtil.defaultGetRoundedValue( 
-						InputAnalyzerUtil.getPercentageOfNumbers( 
-								result.getCountOfNumbers(), 
-								(result.getCountOfNumbers() + result.getCountOfStrings()))));
+		result.setTotal(InputAnalyzerUtil.sum(result.getNumericValues()));	
+		result.setAvg( InputAnalyzerUtil.roundValue( 
+				InputAnalyzerUtil.avg(result.getNumericValues())));	
+		result.setSortedNumericValues(InputAnalyzerUtil.sortNumbers(result.getNumericValues()));	
+		result.setSortedStringValues(InputAnalyzerUtil.sortStrings(result.getStringValues()));	
+		result.setMedian( InputAnalyzerUtil.median(result.getSortedNumericValues()));	
+		result.setPercentageOfNumbers(InputAnalyzerUtil.roundValue( 
+						InputAnalyzerUtil.calculatePercentageOfNumbers( 
+								result.getCountOfNumbers(), (result.getCountOfNumbers() + result.getCountOfStrings()))));
 		return result;
 	}
 
