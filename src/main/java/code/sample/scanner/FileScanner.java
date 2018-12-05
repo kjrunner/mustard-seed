@@ -19,14 +19,11 @@ public class FileScanner {
 		
 		if (Files.isDirectory(path)) {
 			System.out.println(String.format(msg, path, "dir"));
+			scanResults.incrementDirectoryCount();
 			DirectoryStream<Path> dirStream = Files.newDirectoryStream( path );
 			Iterator<Path> i = dirStream.iterator();
 			while(i.hasNext()) {
-				Path p = i.next();
-				if (Files.isDirectory(p)) {
-					scanResults.incrementDirectoryCount();
-				}
-				this.traversePath(p,scanResults);
+				this.traversePath(i.next(),scanResults);
 			}
 		} else {
 			System.out.println(String.format(msg, path, "file"));
