@@ -5,6 +5,7 @@
 
 ### Basic Instructions
 
+After cloning the project, navigate to the `code-samples` directory.  All maven and java commands to run the code should be executed from this location.
 
 #### Code Sample 1: Input Analyzer
 
